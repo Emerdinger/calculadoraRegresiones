@@ -4,22 +4,23 @@ var elt = document.getElementById('calculator');
 var calculator = Desmos.GraphingCalculator(elt);
 
 let valor = 0;
-let sumaX = 0, sumaY = 0, sumaXY = 0, sumaC = 0, promY = 0, promX = 0, a0 = 0, a1 = 0, x2 = 0, sumST = 0, sumSR = 0, sy = 0, syx = 0, r = 0
+let sumaX = 0, sumaY = 0, sumaXY = 0, sumaC = 0, promY = 0, promX = 0, a0 = 0, a1 = 0, x2 = 0, sumST = 0, sumSR = 0,
+    sy = 0, syx = 0, r = 0
 let letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 
 if (!localStorage.getItem('regresion')) {
     window.location.assign('../index.html');
 }
 
-if(localStorage.getItem('regresion') == 'regresionLineal'){
+if (localStorage.getItem('regresion') == 'regresionLineal') {
     document.querySelector('.title-regresion').innerHTML = 'Calculadora de Regresión Lineal'
-}else if(localStorage.getItem('regresion') == 'modeloExponencial'){
+} else if (localStorage.getItem('regresion') == 'modeloExponencial') {
     document.querySelector('.title-regresion').innerHTML = 'Calculadora de Modelo Exponencial'
-}else if(localStorage.getItem('regresion') == 'ecuacionPotencias'){
+} else if (localStorage.getItem('regresion') == 'ecuacionPotencias') {
     document.querySelector('.title-regresion').innerHTML = 'Calculadora de Ecuaciones de potencias'
-}else if(localStorage.getItem('regresion') == 'razonCrecimiento'){
+} else if (localStorage.getItem('regresion') == 'razonCrecimiento') {
     document.querySelector('.title-regresion').innerHTML = 'Calculadora de Razones de crecimiento'
-}else if(localStorage.getItem('regresion') == 'regresionPolimonial2'){
+} else if (localStorage.getItem('regresion') == 'regresionPolimonial2') {
     document.querySelector('.title-regresion').innerHTML = 'Calculadora de Regresión Polimonial grado 2'
 }
 
@@ -50,15 +51,15 @@ puntosXY.addEventListener('submit', (e) => {
     puntosXY.style.display = 'none';
     if (localStorage.getItem('regresion') == 'regresionLineal') {
         regresionLineal(valor);
-    }else if(localStorage.getItem('regresion') == 'modeloExponencial'){
+    } else if (localStorage.getItem('regresion') == 'modeloExponencial') {
         modeloExponencial(valor);
-    }else if(localStorage.getItem('regresion') == 'ecuacionPotencias'){
+    } else if (localStorage.getItem('regresion') == 'ecuacionPotencias') {
         ecuacionPotencias(valor);
-    }else if(localStorage.getItem('regresion') == 'razonCrecimiento'){
+    } else if (localStorage.getItem('regresion') == 'razonCrecimiento') {
         razonCrecimiento(valor);
-    }else if(localStorage.getItem('regresion') == 'regresionPolimonial2'){
+    } else if (localStorage.getItem('regresion') == 'regresionPolimonial2') {
         regresionPolimonial2(valor);
-    }else{
+    } else {
         window.location.assign('../index.html');
     }
 });
@@ -101,11 +102,11 @@ function regresionLineal(valor) {
     document.querySelector('.dev-estandar').innerHTML = `Desviacion estandar = ${sy}`
     document.querySelector('.error-estandar').innerHTML = `Error estandar = ${syx}`
     document.querySelector('.coef-correlacion').innerHTML = `Coeficiente de correlacion = ${r}`
-    calculator.setExpression({ id: 'graph1', latex: `y=${a0} + ${a1}x` });
+    calculator.setExpression({id: 'graph1', latex: `y=${a0} + ${a1}x`});
 
     elt.style.display = '';
 
-    calculator.setExpression({ id: 'graph1', latex: `y=${a0} + ${a1}x` });
+    calculator.setExpression({id: 'graph1', latex: `y=${a0} + ${a1}x`});
 
     for (let i = 0; i < valor; i++) {
         calculator.setExpression({
@@ -117,7 +118,7 @@ function regresionLineal(valor) {
     }
 }
 
-function modeloExponencial(valor){
+function modeloExponencial(valor) {
     let x = []
     let y = []
     let logy = []
@@ -142,7 +143,7 @@ function modeloExponencial(valor){
     a0 = promY - (a1 * promX);
 
     for (let i = 0; i < valor; i++) {
-        sumST += Math.pow((logy[i]-promY), 2)
+        sumST += Math.pow((logy[i] - promY), 2)
         sumSR += (logy[i] - a0 - (a1 * x[i])) * (logy[i] - a0 - (a1 * x[i]));
     }
 
@@ -162,7 +163,7 @@ function modeloExponencial(valor){
 
     elt.style.display = '';
     console.log(a1)
-    calculator.setExpression({ id: 'graph1', latex: `y=${a0}e^{${a1}x}` });
+    calculator.setExpression({id: 'graph1', latex: `y=${a0}e^{${a1}x}`});
 
     for (let i = 0; i < valor; i++) {
         calculator.setExpression({
@@ -175,7 +176,7 @@ function modeloExponencial(valor){
 
 }
 
-function ecuacionPotencias(valor){
+function ecuacionPotencias(valor) {
     let x = []
     let y = []
     let logx = []
@@ -200,15 +201,15 @@ function ecuacionPotencias(valor){
     promY = sumaY / sumaC;
     a1 = (sumaC * sumaXY - (sumaX * sumaY)) / (sumaC * x2 - (sumaX * sumaX));
     a0 = promY - (a1 * promX);
-    console.log(a1,a0)
-    
+    console.log(a1, a0)
+
 
     for (let i = 0; i < valor; i++) {
-        sumST += Math.pow((logy[i]-promY), 2)
-        sumSR += Math.pow(logy[i]-a0-a1*logx[i],2);
+        sumST += Math.pow((logy[i] - promY), 2)
+        sumSR += Math.pow(logy[i] - a0 - a1 * logx[i], 2);
     }
-    console.log(sumST,sumSR);
-    a0 = Math.pow(10,a0);
+    console.log(sumST, sumSR);
+    a0 = Math.pow(10, a0);
 
     sy = Math.sqrt(sumST / (sumaC - 1));
     syx = Math.sqrt(sumSR / (sumaC - 2));
@@ -223,7 +224,7 @@ function ecuacionPotencias(valor){
     document.querySelector('.coef-correlacion').innerHTML = `Coeficiente de correlacion = ${r.toFixed(5)}`
 
     elt.style.display = '';
-    calculator.setExpression({ id: 'graph1', latex: `y=${a0}x^{${a1}}` });
+    calculator.setExpression({id: 'graph1', latex: `y=${a0}x^{${a1}}`});
 
     for (let i = 0; i < valor; i++) {
         calculator.setExpression({
@@ -239,16 +240,16 @@ function ecuacionPotencias(valor){
 function razonCrecimiento(valor) {
     let x = []
     let y = []
-    let aux =[]
-    let auy =[]
+    let aux = []
+    let auy = []
 
     for (let i = 0; i < valor; i++) {
         x.push(parseInt(document.getElementById(`x_${i}`).value));
         y.push(parseInt(document.getElementById(`y_${i}`).value));
         aux.push(parseInt(document.getElementById(`x_${i}`).value));
         auy.push(parseInt(document.getElementById(`y_${i}`).value));
-        x[i] = 1/x[i]
-        y[i] = 1/y[i]
+        x[i] = 1 / x[i]
+        y[i] = 1 / y[i]
     }
 
     for (let i = 0; i < valor; i++) {
@@ -263,17 +264,17 @@ function razonCrecimiento(valor) {
     promY = sumaY / sumaC;
     a1 = (sumaC * sumaXY - (sumaX * sumaY)) / (sumaC * x2 - (sumaX * sumaX));
     a0 = promY - (a1 * promX);
-    
+
     console.log("a0 ", a0, "a1", a1)
 
     for (let i = 0; i < valor; i++) {
-        sumST += Math.pow((y[i]-promY), 2)
-        sumSR += Math.pow(y[i] - a0 - a1 * x[i],2);
+        sumST += Math.pow((y[i] - promY), 2)
+        sumSR += Math.pow(y[i] - a0 - a1 * x[i], 2);
     }
 
-    a1 = a1/a0
-    a0 = 1/a0
-    
+    a1 = a1 / a0
+    a0 = 1 / a0
+
     sy = Math.sqrt(sumST / (sumaC - 1));
     syx = Math.sqrt(sumSR / (sumaC - 2));
     r = Math.sqrt(Math.abs((sumST - sumSR) / sumST)) * 100
@@ -295,7 +296,7 @@ function razonCrecimiento(valor) {
     document.querySelector('.coef-correlacion').innerHTML = `Coeficiente de correlacion = ${r.toFixed(5)}`
 
     elt.style.display = '';
-    calculator.setExpression({ id: 'graph1', latex: `y=${a0}x/(${a1}+x)` });
+    calculator.setExpression({id: 'graph1', latex: `y=${a0}x/(${a1}+x)`});
 
     for (let i = 0; i < valor; i++) {
         calculator.setExpression({
@@ -308,7 +309,7 @@ function razonCrecimiento(valor) {
 
 }
 
-function regresionPolimonial2(valor){
+function regresionPolimonial2(valor) {
     let x = []
     let y = []
 
@@ -326,17 +327,17 @@ function regresionPolimonial2(valor){
         sumaX += x[i];
         sumaY += y[i];
         sumaXY += x[i] * y[i];
-        sumx2.push(x[i]*x[i]);
+        sumx2.push(x[i] * x[i]);
         x2 += x[i] * x[i]
-        x3 += Math.pow(x[i],3)
-        x4 += Math.pow(x[i],4)
-        x2y += (Math.pow(x[i],2))*y[i]
+        x3 += Math.pow(x[i], 3)
+        x4 += Math.pow(x[i], 4)
+        x2y += (Math.pow(x[i], 2)) * y[i]
     }
 
     promX = sumaX / sumaC;
     promY = sumaY / sumaC;
-    let aux1 = [[sumaC,sumaX,x2], [sumaX,x2,x3], [x2,x3,x4]];
-    let aux2 = [sumaY,sumaXY,x2y];
+    let aux1 = [[sumaC, sumaX, x2], [sumaX, x2, x3], [x2, x3, x4]];
+    let aux2 = [sumaY, sumaXY, x2y];
     let sol = gauss(aux1, aux2);
     console.log(sol);
     a0 = sol[0]
@@ -344,8 +345,8 @@ function regresionPolimonial2(valor){
     a2 = sol[2]
 
     for (let i = 0; i < valor; i++) {
-        sumST += Math.pow((y[i]-promY), 2)
-        sumSR += Math.pow((y[i] - a0 - (a1 * x[i]))-(a2*sumx2[i]),2);
+        sumST += Math.pow((y[i] - promY), 2)
+        sumSR += Math.pow((y[i] - a0 - (a1 * x[i])) - (a2 * sumx2[i]), 2);
     }
 
     sy = Math.sqrt(sumST / (sumaC - 1));
@@ -361,7 +362,7 @@ function regresionPolimonial2(valor){
     document.querySelector('.coef-correlacion').innerHTML = `Coeficiente de correlacion = ${r.toFixed(5)}`
 
     elt.style.display = '';
-    calculator.setExpression({ id: 'graph1', latex: `y=${a0}+${a1}x^1+${a2}x^2` });
+    calculator.setExpression({id: 'graph1', latex: `y=${a0}+${a1}x^1+${a2}x^2`});
 
     for (let i = 0; i < valor; i++) {
         calculator.setExpression({
@@ -373,14 +374,13 @@ function regresionPolimonial2(valor){
     }
 }
 
-function gauss(a,b){
+function gauss(a, b) {
     var n = b.length;
     for (var i = 0; i < n; i++) {
         {
             if (i === n - 1 && a[i][i] === 0) {
                 return b;
-            }
-            else
+            } else
                 while ((a[i][i] === 0)) {
                     {
                         for (var h = i; h < n - 1; h++) {
